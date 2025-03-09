@@ -16,13 +16,17 @@ void put_pixel(int x, int y, unsigned int color) {
     }
 }
 
-void draw_char(int x, int y, char c, unsigned int color) {
-    int index = c - 'A'; 
+void draw_char(int x, int y, char c, unsigned int color, int scale) {
+    int index = c - 'A';
 
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
             if (font[index][i] & (0b10000000 >> j)) {
-                put_pixel(x + j, y + i, color);
+                for (int k = 0; k < scale; k++) {
+                    for (int l = 0; l < scale; l++) {
+                        put_pixel(x + (j * scale) + k, y + (i * scale) + l, color);
+                    }
+                }
             }
         }
     }
@@ -56,17 +60,20 @@ int main() {
     // fill framebuffer with black background color
     memset(framebuffer, 0, sizeof(framebuffer));
 
-    draw_char(1280/2, 720/2 - 100, 'H', 0xFFFFFF);
-    draw_char(1280/2, 720/2 - 90, 'E', 0xFFFFFF);
-    draw_char(1280/2, 720/2 - 80, 'L', 0xFFFFFF);
-    draw_char(1280/2, 720/2 - 70, 'L', 0xFFFFFF);
-    draw_char(1280/2, 720/2 - 60, 'L', 0xFFFFFF);
-    draw_char(1280/2, 720/2 - 50, 'O', 0xFFFFFF);
-    draw_char(1280/2, 720/2 - 30, 'W', 0xFFFFFF);
-    draw_char(1280/2, 720/2 - 20, 'O', 0xFFFFFF);
-    draw_char(1280/2, 720/2 - 10, 'R', 0xFFFFFF);
-    draw_char(1280/2, 720/2, 'L', 0xFFFFFF);
-    draw_char(1280/2, 720/2 + 10, 'D', 0xFFFFFF);
+    int scale = 3; 
+    int char_height = 8 * scale + 10;
+    int start_y = 720 / 2 - (char_height * 6);
+
+    draw_char(1280 / 2, start_y, 'H', 0xFFFFFF, scale);
+    draw_char(1280 / 2, start_y + char_height, 'E', 0xFFFFFF, scale);
+    draw_char(1280 / 2, start_y + 2 * char_height, 'L', 0xFFFFFF, scale);
+    draw_char(1280 / 2, start_y + 3 * char_height, 'L', 0xFFFFFF, scale);
+    draw_char(1280 / 2, start_y + 4 * char_height, 'O', 0xFFFFFF, scale);
+    draw_char(1280 / 2, start_y + 5 * char_height, 'W', 0xFFFFFF, scale);
+    draw_char(1280 / 2, start_y + 6 * char_height, 'O', 0xFFFFFF, scale);
+    draw_char(1280 / 2, start_y + 7 * char_height, 'R', 0xFFFFFF, scale);
+    draw_char(1280 / 2, start_y + 8 * char_height, 'L', 0xFFFFFF, scale);
+    draw_char(1280 / 2, start_y + 9 * char_height, 'D', 0xFFFFFF, scale);
 
     while (1) {
         XNextEvent(display, &event);
