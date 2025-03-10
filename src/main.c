@@ -32,6 +32,21 @@ void draw_char(int x, int y, char c, unsigned int color, int scale) {
     }
 }
 
+
+void draw_string(int x, int y, const char *str, unsigned int color, int scale) {
+    int char_width = 8 * scale + 10;
+    while (*str) {
+        if (*str == ' ') {
+            x += char_width;
+        } else {
+            draw_char(x, y, *str, color, scale);
+            x += char_width;
+        }
+        str++;
+    }
+}
+
+
 int main() {
     Display *display;
     Window window;
@@ -64,16 +79,8 @@ int main() {
     int char_height = 8 * scale + 10;
     int start_y = 720 / 2 - (char_height * 6);
 
-    draw_char(1280 / 2, start_y, 'H', 0xFFFFFF, scale);
-    draw_char(1280 / 2, start_y + char_height, 'E', 0xFFFFFF, scale);
-    draw_char(1280 / 2, start_y + 2 * char_height, 'L', 0xFFFFFF, scale);
-    draw_char(1280 / 2, start_y + 3 * char_height, 'L', 0xFFFFFF, scale);
-    draw_char(1280 / 2, start_y + 4 * char_height, 'O', 0xFFFFFF, scale);
-    draw_char(1280 / 2, start_y + 5 * char_height, 'W', 0xFFFFFF, scale);
-    draw_char(1280 / 2, start_y + 6 * char_height, 'O', 0xFFFFFF, scale);
-    draw_char(1280 / 2, start_y + 7 * char_height, 'R', 0xFFFFFF, scale);
-    draw_char(1280 / 2, start_y + 8 * char_height, 'L', 0xFFFFFF, scale);
-    draw_char(1280 / 2, start_y + 9 * char_height, 'D', 0xFFFFFF, scale);
+    draw_string(1280/2 - 20, 720/2 - 140, "HELLO WORLD", 0xFFFFFF, 3);
+
 
     while (1) {
         XNextEvent(display, &event);
