@@ -46,6 +46,34 @@ void draw_string(int x, int y, const char *str, unsigned int color, int scale) {
     }
 }
 
+// circle function using Bresenham bresenham algorithm (efficient because only addition and substractions).
+void draw_circle(int xc, int yc, int radius, unsigned int color) {
+    int x = 0, y = radius;
+    int d = 3 - 2 * radius;
+
+    while (y >= x) {
+        // draw the 8 octants that make the circle (octant = 360/8=45deg=π/4)
+        put_pixel(xc + x, yc + y, color);
+        put_pixel(xc - x, yc + y, color);
+        put_pixel(xc + x, yc - y, color);
+        put_pixel(xc - x, yc - y, color);
+        put_pixel(xc + y, yc + x, color);
+        put_pixel(xc - y, yc + x, color);
+        put_pixel(xc + y, yc - x, color);
+        put_pixel(xc - y, yc - x, color);
+
+        x++;
+
+        if (d > 0) {
+            y--;
+            d = d + 4 * (x - y) + 10;
+        } else {
+            d = d + 4 * x + 6;
+        }
+    }
+}
+
+
 
 int main() {
     Display *display;
@@ -80,6 +108,8 @@ int main() {
     int start_y = 720 / 2 - (char_height * 6);
 
     draw_string(1280/2 - 20, 720/2 - 140, "HELLO WORLD", 0xFFFFFF, 3);
+
+    draw_circle(1280/2, 720/2, 100, 0xFFFFFF);
 
 
     while (1) {
