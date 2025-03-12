@@ -32,10 +32,16 @@ int main() {
 
     memset(framebuffer, 0, sizeof(framebuffer));
 
-    draw_string(1280 / 2 - 20, 720 / 2 - 140, "HELLO WORLD", 0xFFFFFF, 3);
-    draw_circle(1280 / 2, 720 / 2, 100, 0xFFFFFF);
+    draw_string(20, 20, "Hello, World !", 0xFFFFFF, 3);
 
-    draw_rectangle(1280 / 2, 720 / 2, 100, 100, 0xFFFFFF);
+    // Rosace
+    draw_circle(640, 360, 100, 0xFFFFFF); 
+    draw_circle(740, 360, 100, 0xFFFFFF); 
+    draw_circle(540, 360, 100, 0xFFFFFF); 
+    draw_circle(690, 443, 100, 0xFFFFFF); 
+    draw_circle(590, 443, 100, 0xFFFFFF); 
+    draw_circle(690, 277, 100, 0xFFFFFF); 
+    draw_circle(590, 277, 100, 0xFFFFFF); 
 
     while (1) {
         XNextEvent(display, &event);

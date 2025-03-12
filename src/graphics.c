@@ -11,7 +11,6 @@ void put_pixel(int x, int y, uint32_t color) {
 }
 
 void draw_char(int x, int y, char c, uint32_t color, int scale) {
-    if (c < 0 || c > 127) return; 
 
     for (int i = 0; i < 8; i++) {  // Iterate over rows
         for (int j = 0; j < 8; j++) {  // Iterate over columns

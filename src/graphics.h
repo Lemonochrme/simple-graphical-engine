@@ -15,4 +15,6 @@ void draw_string(int x, int y, const char *str, uint32_t color, int scale);
 void draw_circle(int xc, int yc, int radius, uint32_t color);
 void draw_rectangle(int x, int y, int width, int height, uint32_t color);
 
+
+
 #endif // GRAPHICS_H
