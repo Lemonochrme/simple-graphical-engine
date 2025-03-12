@@ -11,20 +11,21 @@ void put_pixel(int x, int y, uint32_t color) {
 }
 
 void draw_char(int x, int y, char c, uint32_t color, int scale) {
-    int index = c - 'A';
+    if (c < 0 || c > 127) return; 
 
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            if (font[index][i] & (0b10000000 >> j)) {
+    for (int i = 0; i < 8; i++) {  // Iterate over rows
+        for (int j = 0; j < 8; j++) {  // Iterate over columns
+            if (font8x8_basic[(int)c][i] & (1 << j)) {  // Flip bit reading order
                 for (int k = 0; k < scale; k++) {
                     for (int l = 0; l < scale; l++) {
-                        put_pixel(x + (j * scale) + k, y + (i * scale) + l, color);
+                        put_pixel(x + j * scale + k, y + i * scale + l, color); // Flip X position
                     }
                 }
             }
         }
     }
 }
+
 
 void draw_string(int x, int y, const char *str, uint32_t color, int scale) {
     int char_width = 8 * scale + 10;
