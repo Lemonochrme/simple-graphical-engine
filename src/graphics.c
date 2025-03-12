@@ -27,7 +27,7 @@ void draw_char(int x, int y, char c, uint32_t color, int scale) {
 
 
 void draw_string(int x, int y, const char *str, uint32_t color, int scale) {
-    int char_width = 8 * scale + 10;
+    int char_width = 8 * scale;
     while (*str) {
         if (*str == ' ') {
             x += char_width;
