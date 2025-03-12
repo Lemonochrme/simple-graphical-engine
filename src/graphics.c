@@ -62,3 +62,14 @@ void draw_circle(int xc, int yc, int radius, uint32_t color) {
         }
     }
 }
+
+void draw_rectangle(int x, int y, int width, int height, uint32_t color) { 
+    for (int i = 0; i < width; i++) {
+        put_pixel(x + i, y, color);
+        put_pixel(x + i, y + height - 1,  color);
+    }
+    for (int i = 0; i < height; i++) {
+        put_pixel(x, y + i, color);
+        put_pixel(x + width - 1, y + i, color);
+    }
+}

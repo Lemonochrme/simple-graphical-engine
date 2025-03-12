@@ -35,6 +35,8 @@ int main() {
     draw_string(1280 / 2 - 20, 720 / 2 - 140, "HELLO WORLD", 0xFFFFFF, 3);
     draw_circle(1280 / 2, 720 / 2, 100, 0xFFFFFF);
 
+    draw_rectangle(1280 / 2, 720 / 2, 100, 100, 0xFFFFFF);
+
     while (1) {
         XNextEvent(display, &event);
         if (event.type == Expose) {
