@@ -3,77 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include "font.h"
-
-#define WIN_WIDTH 1280
-#define WIN_HEIGHT 720
-
-unsigned int framebuffer[WIN_WIDTH * WIN_HEIGHT];
-
-void put_pixel(int x, int y, unsigned int color) {
-    if (x >= 0 && x < WIN_WIDTH && y >= 0 && y < WIN_HEIGHT) {
-        framebuffer[y * WIN_WIDTH + x] = color;
-    }
-}
-
-void draw_char(int x, int y, char c, unsigned int color, int scale) {
-    int index = c - 'A';
-
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            if (font[index][i] & (0b10000000 >> j)) {
-                for (int k = 0; k < scale; k++) {
-                    for (int l = 0; l < scale; l++) {
-                        put_pixel(x + (j * scale) + k, y + (i * scale) + l, color);
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-void draw_string(int x, int y, const char *str, unsigned int color, int scale) {
-    int char_width = 8 * scale + 10;
-    while (*str) {
-        if (*str == ' ') {
-            x += char_width;
-        } else {
-            draw_char(x, y, *str, color, scale);
-            x += char_width;
-        }
-        str++;
-    }
-}
-
-// circle function using Bresenham bresenham algorithm (efficient because only addition and substractions).
-void draw_circle(int xc, int yc, int radius, unsigned int color) {
-    int x = 0, y = radius;
-    int d = 3 - 2 * radius;
-
-    while (y >= x) {
-        // draw the 8 octants that make the circle (octant = 360/8=45deg=π/4)
-        put_pixel(xc + x, yc + y, color);
-        put_pixel(xc - x, yc + y, color);
-        put_pixel(xc + x, yc - y, color);
-        put_pixel(xc - x, yc - y, color);
-        put_pixel(xc + y, yc + x, color);
-        put_pixel(xc - y, yc + x, color);
-        put_pixel(xc + y, yc - x, color);
-        put_pixel(xc - y, yc - x, color);
-
-        x++;
-
-        if (d > 0) {
-            y--;
-            d = d + 4 * (x - y) + 10;
-        } else {
-            d = d + 4 * x + 6;
-        }
-    }
-}
-
-
+#include "graphics.h"
 
 int main() {
     Display *display;
@@ -97,20 +27,13 @@ int main() {
     GC gc = XCreateGC(display, window, 0, NULL);
     XSetForeground(display, gc, BlackPixel(display, screen));
 
-    // Stocking the framebuffer
-    XImage *image = XCreateImage(display, DefaultVisual(display, screen), DefaultDepth(display, screen), ZPixmap, 0, (char*) framebuffer, WIN_WIDTH, WIN_HEIGHT, 32, 0);
+    XImage *image = XCreateImage(display, DefaultVisual(display, screen), DefaultDepth(display, screen),
+                                 ZPixmap, 0, (char*) framebuffer, WIN_WIDTH, WIN_HEIGHT, 32, 0);
 
-    // fill framebuffer with black background color
     memset(framebuffer, 0, sizeof(framebuffer));
 
-    int scale = 3; 
-    int char_height = 8 * scale + 10;
-    int start_y = 720 / 2 - (char_height * 6);
-
-    draw_string(1280/2 - 20, 720/2 - 140, "HELLO WORLD", 0xFFFFFF, 3);
-
-    draw_circle(1280/2, 720/2, 100, 0xFFFFFF);
-
+    draw_string(1280 / 2 - 20, 720 / 2 - 140, "HELLO WORLD", 0xFFFFFF, 3);
+    draw_circle(1280 / 2, 720 / 2, 100, 0xFFFFFF);
 
     while (1) {
         XNextEvent(display, &event);
